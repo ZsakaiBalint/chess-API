@@ -7,7 +7,7 @@ A repository felépítése a következő:
 * **FONTOS** app.js: a projekt magja, ez tartalmazza az összes függvényt
 * **FONTOS** package.json: ez a file írja le a projektet, mint JavaScript csomagot
 * node_modules mappa: itt tárolódik minden kiegészítő csomagfájl, automatikusan jött létre
-* package-lock.json: a függőségi fát ábrázolja, automatikusan jött létre
+* package-lock.json: a kiegészítő csomagfájlok függőségi fáját ábrázolja, automatikusan jött létre
 
 ***
 A felhasznált technológiák:
