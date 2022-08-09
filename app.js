@@ -5,7 +5,7 @@ const app = express();
 
 //include functions module, the file that contains 
 //the core functionality of the project
-var functions = require("./functions"); 
+let functions = require("./functions"); 
 //console.log(functions.addTwo(1,2));
 //console.log(functions.lolSomething());
 

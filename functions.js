@@ -1,7 +1,7 @@
 //function definitions
 
 function chessBoardStartingSetup() {
-    var setup = [
+    let setup = [
         { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
         { location: {row: 2, col: "a"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 7, col: "a"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
@@ -38,7 +38,12 @@ function chessBoardStartingSetup() {
     return setup;
 };
 
+function isInSameRow(piece1,piece2) {
+    return piece1.location.row == piece2.location.row;
+}
+
 //we specify here that we want to export these functions from the functions.js module
 module.exports = {
-    chessBoardStartingSetup
+    chessBoardStartingSetup,
+    isInSameRow
 }
