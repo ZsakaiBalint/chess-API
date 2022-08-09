@@ -11,7 +11,7 @@ test  : lefuttatja a teszteket
 A repository felépítése a következő:
 * app.js: ebben a fileban van definiálva, hogy az api hogyan
 viselkedjen egyes hívásokra
-* functions.js: 
+* functions.js: az alkalmazás üzleti logikája, valamint minden funkcionalitást megvalósító függvény itt található
 * package.json: ez a file írja le a projektet, mint JavaScript csomagot, ebben vannak a terminálból indítható parancsok
 * node_modules *mappa*: itt tárolódik minden kiegészítő csomagfájl, automatikusan jött létre
 * \__test__ *mappa*: itt találhatók a tesztek
