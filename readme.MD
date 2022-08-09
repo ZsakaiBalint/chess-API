@@ -16,6 +16,8 @@ viselkedjen egyes hívásokra
 * node_modules *mappa*: itt tárolódik minden kiegészítő csomagfájl, automatikusan jött létre
 * \__test__ *mappa*: itt találhatók a tesztek
     * test.spec.js: ez a file tartalmazza a teszteseteket
+* .github\workflows *mappa*
+    * node.js.yml: ez a file felelős azért, hogy lefussanak githubon az automatikus tesztek
 * package-lock.json: a kiegészítő csomagfájlok függőségi fáját ábrázolja, automatikusan jött létre
 
 ***
