@@ -42,8 +42,13 @@ function isInSameRow(piece1,piece2) {
     return piece1.location.row == piece2.location.row;
 }
 
+function isInSameCol(piece1,piece2) {
+    return piece1.location.col == piece2.location.col;
+}
+
 //we specify here that we want to export these functions from the functions.js module
 module.exports = {
     chessBoardStartingSetup,
-    isInSameRow
+    isInSameRow,
+    isInSameCol
 }
