@@ -16,7 +16,7 @@ describe("Testing", () => {
 
       expect(obj1).toEqual(obj2);
     });
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("isInSameRow true", () => {
       let obj1 = { location: {row: 3, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
       let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
@@ -29,5 +29,19 @@ describe("Testing", () => {
       let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
 
       expect(functions.isInSameRow(obj1,obj2)).toBe(true);
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isInSameCol true", () => {
+      let obj1 = { location: {row: 3, col: 'c'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
+      let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+
+      expect(functions.isInSameCol(obj1,obj2)).toBe(true);
+    });
+
+    test("isInSameCol false", () => {
+      let obj1 = { location: {row: 3, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
+      let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+
+      expect(functions.isInSameCol(obj1,obj2)).toBe(false);
     });
 });
