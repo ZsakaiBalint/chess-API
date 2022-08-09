@@ -5,8 +5,8 @@ Ebben a repositoryban a szakdolgozati munkámat tárolom.
 A tesztek automatikusan lefutnak minden commitnál (github actions). 
 ***
 **Fontosabb parancsok**  
-start : elindítja magát a webes applikációt  
-test  : lefuttatja a teszteket
+npm start : elindítja magát a webes applikációt  
+npm test  : lefuttatja a teszteket
 ***
 A repository felépítése a következő:
 * app.js: ebben a fileban van definiálva, hogy az api hogyan
