@@ -1,5 +1,4 @@
-//function definitions
-
+//returns the initial layout of the chessboard
 function chessBoardStartingSetup() {
     let setup = [
         { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
@@ -38,17 +37,52 @@ function chessBoardStartingSetup() {
     return setup;
 };
 
+//all pieces should be in this form: { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true }
+function checkPieceValidity(piece) {
+
+    //check row
+    if(piece.location.row < 1 || piece.location.row > 8 || piece.location.row % 1 != 0) {
+        throw "The row number of the chess piece must be between 1-8!";
+    }
+
+    //check col
+    if(!['a','b','c','d','e','f','g','h'].includes(piece.location.col)){
+        throw "The column letter must be between a-h!";
+    }
+
+    //check piece type
+    if(!["pawn","rook","knight","bishop","queen","king"].includes(piece.pieceType)) {
+        throw "The chess piece type must be one of the following: pawn/rook/knight/bishop/queen/king!";
+    }
+
+    //check the "player's piece" property 
+    if(typeof piece.isplayerPiece !== "boolean") {
+        throw "The playerPiece property must be a boolean value!";
+    }
+
+    //check the "is in game" property
+    if(typeof piece.isInGame !== "boolean") {
+        throw "The isInGame property must be a boolean value!";
+    }
+
+}
+
 function isInSameRow(piece1,piece2) {
-    return piece1.location.row == piece2.location.row;
+    checkPieceValidity(piece1);
+    checkPieceValidity(piece2);
+    return piece1.location.row === piece2.location.row;
 }
 
 function isInSameCol(piece1,piece2) {
-    return piece1.location.col == piece2.location.col;
+    checkPieceValidity(piece1);
+    checkPieceValidity(piece2);
+    return piece1.location.col === piece2.location.col;
 }
 
 //we specify here that we want to export these functions from the functions.js module
 module.exports = {
     chessBoardStartingSetup,
+    checkPieceValidity,
     isInSameRow,
     isInSameCol
 }
