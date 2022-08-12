@@ -95,4 +95,45 @@ describe("Testing", () => {
       expect(() => functions.isInSameCol(obj1,obj2)).toThrow('The row number of the chess piece must be between 1-8!');
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isInSameDiag left top", () => {
+      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
+      let obj2 = { location: {row: 5, col: 'b'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+
+      expect(functions.isInSameDiag(obj1,obj2)).toBe(true);
+    });
+
+    test("isInSameDiag left bottom", () => {
+      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
+      let obj2 = { location: {row: 2, col: 'c'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+
+      expect(functions.isInSameDiag(obj1,obj2)).toBe(true);
+    });
+
+    test("isInSameDiag right top", () => {
+      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
+      let obj2 = { location: {row: 7, col: 'h'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+
+      expect(functions.isInSameDiag(obj1,obj2)).toBe(true);
+    });
+
+    test("isInSameDiag right bottom", () => {
+      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
+      let obj2 = { location: {row: 1, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+
+      expect(functions.isInSameDiag(obj1,obj2)).toBe(true);
+    });
+
+    test("isInSameDiag false", () => {
+      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
+      let obj2 = { location: {row: 3, col: 'e'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+
+      expect(functions.isInSameDiag(obj1,obj2)).toBe(false);
+    });
+
+    test("isInSameDiag contains checkPieceValidity", () => {
+      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
+      let obj2 = { location: {row: 8, col: 'i'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+
+      expect(() => functions.isInSameDiag(obj1,obj2)).toThrow('The column letter must be between a-h!');
+    });
 });

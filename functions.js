@@ -79,10 +79,20 @@ function isInSameCol(piece1,piece2) {
     return piece1.location.col === piece2.location.col;
 }
 
+function isInSameDiag(piece1,piece2) {
+    checkPieceValidity(piece1);
+    checkPieceValidity(piece2);
+
+    let rowDiff = Math.abs(piece1.location.row - piece2.location.row);
+    let colDiff = Math.abs(piece1.location.col.charCodeAt(0) - piece2.location.col.charCodeAt(0));
+    return colDiff === rowDiff;
+}
+
 //we specify here that we want to export these functions from the functions.js module
 module.exports = {
     chessBoardStartingSetup,
     checkPieceValidity,
     isInSameRow,
-    isInSameCol
+    isInSameCol,
+    isInSameDiag
 }
