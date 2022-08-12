@@ -17,6 +17,42 @@ describe("Testing", () => {
       expect(obj1).toEqual(obj2);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("checkPieceValidity row", () => {
+      let obj = { location: {row: 15, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
+      
+      expect(() => functions.checkPieceValidity(obj)).toThrow('The row number of the chess piece must be between 1-8!');
+    });
+
+    test("checkPieceValidity col", () => {
+      let obj = { location: {row: 4, col: 'k'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
+      
+      expect(() => functions.checkPieceValidity(obj)).toThrow('The column letter must be between a-h!');
+    });
+
+    test("checkPieceValidity pieceType", () => {
+      let obj = { location: {row: 3, col: 'e'}, pieceType: "nOtAcHeSsPiEcE", isplayerPiece: false, isInGame: true }
+      
+      expect(() => functions.checkPieceValidity(obj)).toThrow('The chess piece type must be one of the following: pawn/rook/knight/bishop/queen/king!');
+    });
+
+    test("checkPieceValidity isPlayerPiece", () => {
+      let obj = { location: {row: 4, col: 'e'}, pieceType: "bishop", isplayerPiece: 1, isInGame: true }
+      
+      expect(() => functions.checkPieceValidity(obj)).toThrow('The playerPiece property must be a boolean value!');
+    });
+
+    test("checkPieceValidity isInGame", () => {
+      let obj = { location: {row: 4, col: 'e'}, pieceType: "bishop", isplayerPiece: true, isInGame: 1 }
+      
+      expect(() => functions.checkPieceValidity(obj)).toThrow('The isInGame property must be a boolean value!');
+    });
+
+    test("checkPieceValidity no exceptions", () => {
+      let obj = { location: {row: 4, col: 'e'}, pieceType: "bishop", isplayerPiece: true, isInGame: true }
+      
+      expect(() => functions.checkPieceValidity(obj)).not.toThrowError();
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("isInSameRow true", () => {
       let obj1 = { location: {row: 3, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
       let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
@@ -29,6 +65,13 @@ describe("Testing", () => {
       let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
 
       expect(functions.isInSameRow(obj1,obj2)).toBe(true);
+    });
+
+    test("isInSameRow contains checkPieceValidity", () => {
+      let obj1 = { location: {row: 19, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
+      let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+
+      expect(() => functions.isInSameRow(obj1,obj2)).toThrow('The row number of the chess piece must be between 1-8!');
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("isInSameCol true", () => {
@@ -44,4 +87,12 @@ describe("Testing", () => {
 
       expect(functions.isInSameCol(obj1,obj2)).toBe(false);
     });
+
+    test("isInSameCol contains checkPieceValidity", () => {
+      let obj1 = { location: {row: 19, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
+      let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+
+      expect(() => functions.isInSameCol(obj1,obj2)).toThrow('The row number of the chess piece must be between 1-8!');
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
