@@ -136,4 +136,95 @@ describe("Testing", () => {
 
       expect(() => functions.isInSameDiag(obj1,obj2)).toThrow('The column letter must be between a-h!');
     });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("noPieceBetweenInRow true", () => {
+      let setup = [
+        { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: 'b'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.noPieceBetweenInRow(setup,0,2)).toBe(true);
+    });
+
+    test("noPieceBetweenInRow false", () => {
+      let setup = [
+        { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: 'e'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.noPieceBetweenInRow(setup,0,2)).toBe(false);
+    });
+
+    test("noPieceBetweenInRow exception", () => {
+      let setup = [
+        { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: 'e'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 3, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(() => functions.noPieceBetweenInRow(setup,0,2)).toThrow('The two chess pieces are not in the same row!');
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("noPieceBetweenInCol true", () => {
+      let setup = [
+        { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 5, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 4, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.noPieceBetweenInCol(setup,0,2)).toBe(true);
+    });
+
+    test("noPieceBetweenInCol false", () => {
+      let setup = [
+        { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 4, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.noPieceBetweenInCol(setup,0,2)).toBe(false);
+    });
+
+    test("noPieceBetweenInCol excepion", () => {
+      let setup = [
+        { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 4, col: 'e'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(() => functions.noPieceBetweenInCol(setup,0,2)).toThrow('The two chess pieces are not in the same column!');
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("noPieceBetweenInDiag true", () => {
+      let setup = [
+        { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: 'c'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 5, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.noPieceBetweenInDiag(setup,0,2)).toBe(true);
+    });
+
+    test("noPieceBetweenInDiag false", () => {
+      let setup = [
+        { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 4, col: 'e'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 5, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.noPieceBetweenInDiag(setup,0,2)).toBe(false);
+    });
+
+    test("noPieceBetweenInDiag excepion", () => {
+      let setup = [
+        { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 4, col: 'e'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: 'g'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(() => functions.noPieceBetweenInDiag(setup,0,2)).toThrow('The two chess pieces are not in the same diagonal!');
+    });
+
 });
