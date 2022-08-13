@@ -88,11 +88,93 @@ function isInSameDiag(piece1,piece2) {
     return colDiff === rowDiff;
 }
 
+//check if there are any chess pieces in the setup between two pieces
+function noPieceBetweenInRow(setup,ind1,ind2) {
+
+    if(!isInSameRow(setup[ind1],setup[ind2])) {
+        throw "The two chess pieces are not in the same row!";
+    }
+    //setup.forEach(piece => {checkPieceValidity(piece)});
+
+    for(const [index,element] of setup.entries()) {
+        //don't check the mentioned two pieces
+        if(index === ind1 || index === ind2) {
+            continue;
+        }
+        else {
+            //check if they are in the same row and the examined piece's column is between the two other pieces'
+            if(isInSameRow(setup[ind1],element) && (
+            (setup[ind1].location.col < element.location.col && element.location.col < setup[ind2].location.col) ||
+            (setup[ind2].location.col < element.location.col && element.location.col < setup[ind1].location.col)
+            )){
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+function noPieceBetweenInCol(setup,ind1,ind2) {
+    
+    if(!isInSameCol(setup[ind1],setup[ind2])) {
+        throw "The two chess pieces are not in the same column!";
+    }
+    //setup.forEach(piece => {checkPieceValidity(piece)});
+
+    for(const [index,element] of setup.entries()) {
+        //don't check the mentioned two pieces
+        if(index === ind1 || index === ind2) {
+            continue;
+        }
+        else {
+            //check if they are in the same column and the examined piece's row is between the two other pieces'
+            if(isInSameCol(setup[ind1],element) && (
+            (setup[ind1].location.row < element.location.row && element.location.row < setup[ind2].location.row) ||
+            (setup[ind2].location.row < element.location.row && element.location.row < setup[ind1].location.row)
+            )){
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+function noPieceBetweenInDiag(setup,ind1,ind2) {
+        
+    if(!isInSameDiag(setup[ind1],setup[ind2])) {
+        throw "The two chess pieces are not in the same diagonal!";
+    }
+    //setup.forEach(piece => {checkPieceValidity(piece)});
+
+    for(const [index,element] of setup.entries()) {
+        //don't check the mentioned two pieces
+        if(index === ind1 || index === ind2) {
+            continue;
+        }
+        else {
+            //check if they are in the same diagonal and the examined piece's row is between the two other pieces'
+            if(isInSameDiag(setup[ind1],element) && (
+            (setup[ind1].location.row < element.location.row && element.location.row < setup[ind2].location.row) ||
+            (setup[ind2].location.row < element.location.row && element.location.row < setup[ind1].location.row)
+            )){
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 //we specify here that we want to export these functions from the functions.js module
 module.exports = {
     chessBoardStartingSetup,
     checkPieceValidity,
     isInSameRow,
     isInSameCol,
-    isInSameDiag
+    isInSameDiag,
+    noPieceBetweenInRow,
+    noPieceBetweenInCol,
+    noPieceBetweenInDiag
 }
