@@ -1,38 +1,43 @@
+/*The functions consist of 2 parts:
+    -the first part can be called by the player to check if the move they want to call on their chess piece is valid
+    -the second part can be called by the player to request an enemy move
+*/
+
 //returns the initial layout of the chessboard
 function chessBoardStartingSetup() {
     let setup = [
-        { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
-        { location: {row: 2, col: "a"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
-        { location: {row: 7, col: "a"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
-        { location: {row: 8, col: "a"}, pieceType: "rook", isplayerPiece: false, isInGame: true },
-        { location: {row: 1, col: "b"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
-        { location: {row: 2, col: "b"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
-        { location: {row: 7, col: "b"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
-        { location: {row: 8, col: "b"}, pieceType: "knight", isplayerPiece: false, isInGame: true },
-        { location: {row: 1, col: "c"}, pieceType: "bishop", isplayerPiece: true, isInGame: true },
-        { location: {row: 2, col: "c"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
-        { location: {row: 7, col: "c"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
-        { location: {row: 8, col: "c"}, pieceType: "bishop", isplayerPiece: false, isInGame: true },
-        { location: {row: 1, col: "d"}, pieceType: "queen", isplayerPiece: true, isInGame: true },
-        { location: {row: 2, col: "d"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
-        { location: {row: 7, col: "d"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
-        { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true },
-        { location: {row: 1, col: "e"}, pieceType: "king", isplayerPiece: true, isInGame: true },
-        { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
-        { location: {row: 7, col: "e"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
-        { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true },
-        { location: {row: 1, col: "f"}, pieceType: "bishop", isplayerPiece: true, isInGame: true },
-        { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
-        { location: {row: 7, col: "f"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
-        { location: {row: 8, col: "f"}, pieceType: "bishop", isplayerPiece: false, isInGame: true },
-        { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
-        { location: {row: 2, col: "g"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
-        { location: {row: 7, col: "g"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
-        { location: {row: 8, col: "g"}, pieceType: "knight", isplayerPiece: false, isInGame: true },
-        { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
-        { location: {row: 2, col: "h"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
-        { location: {row: 7, col: "h"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
-        { location: {row: 8, col: "h"}, pieceType: "rook", isplayerPiece: false, isInGame: true }
+        { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 2, col: "a"}, pieceType: "pawn", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 7, col: "a"}, pieceType: "pawn", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 8, col: "a"}, pieceType: "rook", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 1, col: "b"}, pieceType: "knight", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 2, col: "b"}, pieceType: "pawn", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 7, col: "b"}, pieceType: "pawn", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 8, col: "b"}, pieceType: "knight", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 1, col: "c"}, pieceType: "bishop", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 2, col: "c"}, pieceType: "pawn", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 7, col: "c"}, pieceType: "pawn", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 8, col: "c"}, pieceType: "bishop", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 1, col: "d"}, pieceType: "queen", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 2, col: "d"}, pieceType: "pawn", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 7, col: "d"}, pieceType: "pawn", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 1, col: "e"}, pieceType: "king", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 7, col: "e"}, pieceType: "pawn", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 1, col: "f"}, pieceType: "bishop", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 7, col: "f"}, pieceType: "pawn", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 8, col: "f"}, pieceType: "bishop", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 2, col: "g"}, pieceType: "pawn", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 7, col: "g"}, pieceType: "pawn", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 8, col: "g"}, pieceType: "knight", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 2, col: "h"}, pieceType: "pawn", isplayerPiece: true, isInGame: true, hasMoved: false },
+        { location: {row: 7, col: "h"}, pieceType: "pawn", isplayerPiece: false, isInGame: true, hasMoved: false },
+        { location: {row: 8, col: "h"}, pieceType: "rook", isplayerPiece: false, isInGame: true, hasMoved: false }
     ];
     return setup;
 };
@@ -167,6 +172,52 @@ function noPieceBetweenInDiag(setup,ind1,ind2) {
     return true;
 }
 
+//returns a piece from the setup which has a certain location, null if it doesn't exist
+function getPieceByLocation(setup,expectedLocation) {
+    let result = setup.find(item => item.location.row === expectedLocation.row && item.location.col == expectedLocation.col);
+    return result;
+}
+
+//calculates if the pawn at 'ind' is eligible to move 1 tile forward - to 'newLocation' - from the chessboard 'setup' 
+function isValidMovePawn1Forward(setup,ind,newLocation) {
+    //it's the player's pawn and the newLocation is 1 row ahead of it and there is no other piece there
+    return (
+    setup[ind].isplayerPiece && 
+    setup[ind].pieceType === "pawn" &&
+    newLocation.row === setup[ind].location.row + 1 &&
+    newLocation.col === setup[ind].location.col && 
+    getPieceByLocation(setup,newLocation) === undefined
+    )
+}
+
+//calculates if the pawn at 'ind' is eligible to move 2 tile forward - to 'newLocation' - from the chessboard 'setup' 
+function isValidMovePawn2Forward(setup,ind,newLocation) {
+    //it's the player's pawn and hasn't moved yet (first move)
+    //the newLocation is 2 rows ahead of it and there is no other piece there
+    //or in front of the pawn
+    return (
+    setup[ind].isplayerPiece &&
+    setup[ind].pieceType === "pawn" &&
+    setup[ind].hasMoved === false &&
+    newLocation.row === setup[ind].location.row + 2 &&
+    newLocation.col === setup[ind].location.col && 
+    getPieceByLocation(setup,newLocation) === undefined &&
+    getPieceByLocation(setup,{row: newLocation.row - 1, col: newLocation.col}) === undefined
+    )
+}
+
+//calculates if the pawn at 'ind' is eligible to attack 1 forward diagonally
+function isValidAttackPawn(setup,ind,newLocation) {
+    //it's the player's pawn, there is an enemy piece there, and the new location is diagonally 1 forward
+    return (
+    setup[ind].isplayerPiece &&
+    setup[ind].pieceType === "pawn" &&
+    !getPieceByLocation(setup,location).isplayerPiece &&
+    newLocation.row === setup[ind].location.row + 1 &&
+    ((newLocation.col === setup[ind].location.row.charCodeAt(0) + 1) || (newLocation.col === setup[ind].location.row.charCodeAt(0) - 1))
+    )
+}
+
 //we specify here that we want to export these functions from the functions.js module
 module.exports = {
     chessBoardStartingSetup,
@@ -176,5 +227,9 @@ module.exports = {
     isInSameDiag,
     noPieceBetweenInRow,
     noPieceBetweenInCol,
-    noPieceBetweenInDiag
+    noPieceBetweenInDiag,
+    getPieceByLocation,
+    isValidMovePawn1Forward,
+    isValidMovePawn2Forward,
+    isValidAttackPawn
 }
