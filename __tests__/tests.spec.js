@@ -392,5 +392,28 @@ describe("Testing", () => {
       expect(functions.isValidEnpassant(setup,1,{row: 6,col: 'c'},matchHistory)).toBe(false);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+    test("isValidPawnPromotion - true", () => {
+      let setup = [
+        { location: {row: 2, col: 'a'}, pieceType: "pawn", isplayerPiece: true, isInGame: true},
+        { location: {row: 7, col: 'b'}, pieceType: "pawn", isplayerPiece: true, isInGame: true},
+        { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true}
+      ];
+
+      let matchHistory = ["b4","d6","b5","d5","b6","d4","b7","d3"];
+
+      expect(functions.isValidPawnPromotion(setup,1,{row: 8,col: 'b'},matchHistory)).toBe(true);
+    });
+
+    test("isValidPawnPromotion - false - bad location", () => {
+      let setup = [
+        { location: {row: 2, col: 'a'}, pieceType: "pawn", isplayerPiece: true, isInGame: true},
+        { location: {row: 2, col: 'b'}, pieceType: "pawn", isplayerPiece: true, isInGame: true},
+        { location: {row: 7, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true}
+      ];
+
+      let matchHistory = [];
+
+      expect(functions.isValidPawnPromotion(setup,1,{row: 8,col: 'b'},matchHistory)).toBe(false);
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 });
