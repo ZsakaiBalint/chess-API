@@ -292,24 +292,24 @@ function isValidEnpassant(setup,index,newLocation,matchHistory) {
         return false
     }
 }
-            
-/*
+      
+//calculate if the pawn at setup[ind] is eligible to pawn promotion when stepping to newLocation
 function isValidPawnPromotion(setup,index,newLocation) {
-
-    if(getPieceByLocation(setup,newLocation) === undefined) {
-        return false;
-    }
 
     let currentPiece = setup[index];
 
     return (
         currentPiece.isplayerPiece && currentPiece.pieceType === "pawn" && //a player's pawn is selected
-        newLocation.location.row === currentPiece.location.row + 1 && newLocation.location.col === currentPiece.location.col && //the player wants to move their pawn 1 forward
+        newLocation.row === currentPiece.location.row + 1 && newLocation.col === currentPiece.location.col && //the player wants to move their pawn 1 forward
         newLocation.row === 8 && //to the last row
         getPieceByLocation(setup,{"row":newLocation.row,"col":newLocation.col}) === undefined//and there is no enemy piece there
     )
 }
-*/
+
+//gives back an array of possible piece types for pawn promotion
+function getPossiblePromotions(){
+    return ["rook","knight","bishop","queen"];
+}
 
 
 
@@ -328,5 +328,7 @@ module.exports = {
     isValidMovePawn1Forward,
     isValidMovePawn2Forward,
     isValidAttackPawn,
-    isValidEnpassant
+    isValidEnpassant,
+    isValidPawnPromotion,
+    getPossiblePromotions
 }
