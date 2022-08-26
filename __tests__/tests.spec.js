@@ -482,4 +482,58 @@ describe("Testing", () => {
 
       expect(functions.isValidAttackMoveRook(setup,0,{"row": 8,"col": 'd'})).toBe(false);
     });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isValidAttackMoveKnight - true - enemy is there, 2 right 1 up", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "knight", isplayerPiece: true, isInGame: true},
+        { location: {row: 5, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveKnight(setup,0,{"row": 5,"col": 'f'})).toBe(true);
+    });
+
+    test("isValidAttackMoveKnight - true - enemy is there, 2 down 1 left", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "knight", isplayerPiece: true, isInGame: true},
+        { location: {row: 2, col: 'c'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveKnight(setup,0,{"row": 2,"col": 'c'})).toBe(true);
+    });
+
+    test("isValidAttackMoveKnight - true - enemy is not there, 2 down 1 left", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "knight", isplayerPiece: true, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveKnight(setup,0,{"row": 2,"col": 'c'})).toBe(true);
+    });
+
+    test("isValidAttackMoveKnight - true - jump over other pieces", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "knight", isplayerPiece: true, isInGame: true},
+        { location: {row: 5, col: 'e'}, pieceType: "pawn", isplayerPiece: true, isInGame: true},
+        { location: {row: 6, col: 'e'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveKnight(setup,0,{"row": 6,"col": 'e'})).toBe(true);
+    });
+
+    test("isValidAttackMoveKnight - false - enemy is there, 3 up", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "knight", isplayerPiece: true, isInGame: true},
+        { location: {row: 7, col: 'c'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveKnight(setup,0,{"row": 7,"col": 'c'})).toBe(false);
+    });
+
+    test("isValidAttackMoveKnight - false - enemy is there, 1 right 1 bottom", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "knight", isplayerPiece: true, isInGame: true},
+        { location: {row: 3, col: 'e'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveKnight(setup,0,{"row": 3,"col": 'e'})).toBe(false);
+    });
 });
