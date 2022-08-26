@@ -574,4 +574,32 @@ describe("Testing", () => {
 
       expect(functions.isValidAttackMoveBishop(setup,0,{"row": 6,"col": 'd'})).toBe(false);
     });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isValidAtackMoveQueen - true - diagonal path", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "queen", isplayerPiece: true, isInGame: true},
+        { location: {row: 2, col: 'b'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveQueen(setup,0,{"row": 2,"col": 'b'})).toBe(true);
+    });
+
+    test("isValidAtackMoveQueen - true - axis path", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "queen", isplayerPiece: true, isInGame: true},
+        { location: {row: 4, col: 'h'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveQueen(setup,0,{"row": 4,"col": 'h'})).toBe(true);
+    });
+
+    test("isValidAtackMoveQueen - false - can't jump over pieces", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "queen", isplayerPiece: true, isInGame: true},
+        { location: {row: 4, col: 'f'}, pieceType: "pawn", isplayerPiece: true, isInGame: true},
+        { location: {row: 4, col: 'h'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveQueen(setup,0,{"row": 4,"col": 'h'})).toBe(false);
+    });
 });
