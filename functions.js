@@ -97,100 +97,81 @@ function checkPieceValidity(piece) {
 
 //returns a piece from the setup which is on a certain location, undefined if it doesn't exist
 function getPieceByLocation(setup,expectedLocation) {
-    let result = setup.find(item => item.location.row === expectedLocation.row && item.location.col == expectedLocation.col);
+    let result = setup.find(item => item.location.row === expectedLocation.row && item.location.col === expectedLocation.col);
     return result;
 }
 
-//checks if two pieces are in the same row
-function isInSameRow(piece1,piece2) {
-    return piece1.location.row === piece2.location.row;
+//checks if two pieces are in the same row {"col": "a", row: 6}
+function isInSameRow(location1,location2) {
+    return location1.row === location2.row;
 }
 
-//checks if two pieces are in the same column
-function isInSamecol(piece1,piece2) {
-    return piece1.location.col === piece2.location.col;
+//checks if two pieces are in the same column {"col": "a", row: 6}
+function isInSameCol(location1,location2) {
+    return location1.col === location2.col;
 }
 
-//checks if two pieces are in the same diagonal line
-function isInSameDiag(piece1,piece2) {
-    let rowDiff = Math.abs(piece1.location.row - piece2.location.row);
-    let colDiff = Math.abs(piece1.location.col.charCodeAt(0) - piece2.location.col.charCodeAt(0));
+//checks if two pieces are in the same diagonal line {"col": "a", row: 6}
+function isInSameDiag(location1,location2) {
+    let rowDiff = Math.abs(location1.row - location2.row);
+    let colDiff = Math.abs(location1.col.charCodeAt(0) - location2.col.charCodeAt(0));
     return colDiff === rowDiff;
 }
 
-//check if there are any chess pieces in the setup between two pieces
-function noPieceBetweenInRow(setup,index1,index2) {
+//return if the two pieces from setup have pieces in between them in a row (also works if there is no piece at the locations)
+function noPieceBetweenInRow(setup,location1,location2) {
 
-    if(!isInSameRow(setup[index1],setup[index2])) {
-        throw "The two chess pieces are not in the same row!";
+    if(!isInSameRow(location1,location2)) {
+        throw "The two locations are not in the same row!";
     }
-    //setup.forEach(piece => {checkPieceValidity(piece)});
 
-    for(const [index,element] of setup.entries()) {
-        //don't check the mentioned two pieces
-        if(index === index1 || index === index2) {
-            continue;
-        }
-        else {
-            //check if they are in the same row and the examined piece's column is between the two other pieces'
-            if(isInSameRow(setup[index1],element) && (
-            (setup[index1].location.col < element.location.col && element.location.col < setup[index2].location.col) ||
-            (setup[index2].location.col < element.location.col && element.location.col < setup[index1].location.col)
-            )){
-                return false;
-            }
+    for(let i=0;i<setup.length;++i) {
+        //check if they are in the same column and the examined piece's row is between the two other location
+        if(isInSameRow(location1,setup[i].location) && (
+        (location1.col < setup[i].location.col && setup[i].location.col < location2.col) ||
+        (location2.col < setup[i].location.col && setup[i].location.col < location1.col)
+        )){
+            return false;
         }
     }
 
     return true;
 }
 
-function noPieceBetweenIncol(setup,index1,index2) {
+//return if the two pieces from setup have pieces in between them in a column (also works if there is no piece at the locations)
+function noPieceBetweenInCol(setup,location1,location2) {
     
-    if(!isInSamecol(setup[index1],setup[index2])) {
-        throw "The two chess pieces are not in the same column!";
+    if(!isInSameCol(location1,location2)) {
+        throw "The two locations are not in the same column!";
     }
-    //setup.forEach(piece => {checkPieceValidity(piece)});
 
-    for(const [index,element] of setup.entries()) {
-        //don't check the mentioned two pieces
-        if(index === index1 || index === index2) {
-            continue;
-        }
-        else {
-            //check if they are in the same column and the examined piece's row is between the two other pieces'
-            if(isInSamecol(setup[index1],element) && (
-            (setup[index1].location.row < element.location.row && element.location.row < setup[index2].location.row) ||
-            (setup[index2].location.row < element.location.row && element.location.row < setup[index1].location.row)
-            )){
-                return false;
-            }
+    for(let i=0;i<setup.length;++i) {
+        //check if they are in the same column and the examined piece's row is between the two other location
+        if(isInSameCol(location1,setup[i].location) && (
+        (location1.row < setup[i].location.row && setup[i].location.row < location2.row) ||
+        (location2.row < setup[i].location.row && setup[i].location.row < location1.row)
+        )){
+            return false;
         }
     }
 
     return true;
 }
 
-function noPieceBetweenindexiag(setup,index1,index2) {
+//return if the two pieces from setup have pieces in between them in a diagonal (also works if there is no piece at the locations)
+function noPieceBetweenInDiag(setup,location1,location2) {
         
-    if(!isInSameDiag(setup[index1],setup[index2])) {
-        throw "The two chess pieces are not in the same diagonal!";
+    if(!isInSameDiag(location1,location2)) {
+        throw "The two locations are not in the same diagonal!";
     }
-    //setup.forEach(piece => {checkPieceValidity(piece)});
 
-    for(const [index,element] of setup.entries()) {
-        //don't check the mentioned two pieces
-        if(index === index1 || index === index2) {
-            continue;
-        }
-        else {
-            //check if they are in the same diagonal and the examined piece's row is between the two other pieces'
-            if(isInSameDiag(setup[index1],element) && (
-            (setup[index1].location.row < element.location.row && element.location.row < setup[index2].location.row) ||
-            (setup[index2].location.row < element.location.row && element.location.row < setup[index1].location.row)
-            )){
-                return false;
-            }
+    for(let i=0;i<setup.length;++i) {
+        //check if they are in the same diagonal and the examined piece's row is between the two others' location
+        if(isInSameDiag(location1,setup[i].location) && (
+        (location1.row < setup[i].location.row && setup[i].location.row < location2.row) ||
+        (location2.row < setup[i].location.row && setup[i].location.row < location1.row)
+        )){
+            return false;
         }
     }
 
@@ -235,6 +216,13 @@ function wasPieceMoved(setup,index,matchHistory = []) {
 
 //calculates if the pawn at 'index' is eligible to move 1 tile forward - to 'newLocation' - from the chessboard 'setup' 
 function isValidMovePawn1Forward(setup,index) {
+
+    let currentPiece = setup[index];
+
+    if(currentPiece.pieceType !== "pawn") {
+        throw "The selected piece must be of type pawn!"
+    }
+
     return (
         setup[index].isplayerPiece && setup[index].pieceType === "pawn" && //it's the player's pawn
         getPieceByLocation(setup,{"row":setup[index].location.row + 1,"col":setup[index].location.col}) === undefined) //there is no piece in front of it 1 row ahead 
@@ -258,6 +246,10 @@ function isValidAttackPawn(setup,index,newLocation) {
         return false;
     }
 
+    if(setup[index].pieceType !== "pawn") {
+        throw "The selected piece must be of type pawn!"
+    }
+
     return (
     setup[index].isplayerPiece && setup[index].pieceType === "pawn" && //it's the player's pawn
     getPieceByLocation(setup,newLocation).isplayerPiece === false && //there is an enemy piece there
@@ -266,15 +258,15 @@ function isValidAttackPawn(setup,index,newLocation) {
     )
 }
 
-function isNextTo(piece1,piece2) {
-    return (piece1.location.row === piece2.location.row) && (MATH.abs(piece1.location.col.charCodeAt(0) - piece2.location.col.charCodeAt(0)) === 1)
-}
-
 //calculate if the pawn at 'index' is eligible for an enpassant, previous move looks like this: { location: {row: 1, col: "a"}, index: 7 },
 function isValidEnpassant(setup,index,newLocation,matchHistory) {
 
     let lastMove = matchHistory.last(); //like "b3"
     let currentPiece = setup[index];
+
+    if(currentPiece.pieceType !== "pawn") {
+        throw "The selected piece must be of type pawn!"
+    }
 
     if(
     /[a-h]5/.test(lastMove) && //the last move was a pawn in the 5th row
@@ -298,6 +290,10 @@ function isValidPawnPromotion(setup,index,newLocation) {
 
     let currentPiece = setup[index];
 
+    if(currentPiece.pieceType !== "pawn") {
+        throw "The selected piece must be of type pawn!"
+    }
+
     return (
         currentPiece.isplayerPiece && currentPiece.pieceType === "pawn" && //a player's pawn is selected
         newLocation.row === currentPiece.location.row + 1 && newLocation.col === currentPiece.location.col && //the player wants to move their pawn 1 forward
@@ -311,6 +307,20 @@ function getPossiblePromotions(){
     return ["rook","knight","bishop","queen"];
 }
 
+//calculate if the rook is eligible to move to a certain place
+function isValidAttackMoveRook(setup,index,newLocation) {
+    
+    let currentPiece = setup[index];
+    if(currentPiece.pieceType !== "rook") {
+        throw "The selected piece must be of type rook!"
+    }
+
+    return (
+        (newLocation.col === currentPiece.location.col && newLocation.row !== currentPiece.location.row && noPieceBetweenInCol(setup,currentPiece.location,newLocation) ) ||
+        (newLocation.row === currentPiece.location.row && newLocation.col !== currentPiece.location.col && noPieceBetweenInRow(setup,currentPiece.location,newLocation) )
+    )
+}
+
 
 
 //we specify here that we want to export these functions from the functions.js module
@@ -319,16 +329,17 @@ module.exports = {
     checkPieceValidity,
     getPieceByLocation,
     isInSameRow,
-    isInSamecol,
+    isInSameCol,
     isInSameDiag,
     noPieceBetweenInRow,
-    noPieceBetweenIncol,
-    noPieceBetweenindexiag,
+    noPieceBetweenInCol,
+    noPieceBetweenInDiag,
     wasPieceMoved,
     isValidMovePawn1Forward,
     isValidMovePawn2Forward,
     isValidAttackPawn,
     isValidEnpassant,
     isValidPawnPromotion,
-    getPossiblePromotions
+    getPossiblePromotions,
+    isValidAttackMoveRook
 }
