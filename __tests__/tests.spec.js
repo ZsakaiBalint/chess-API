@@ -58,80 +58,80 @@ describe("Testing", () => {
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("isInSameRow - left", () => {
-      let obj1 = { location: {row: 3, col: 'f'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
-      let obj2 = { location: {row: 3, col: 'd'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+      let location1 = {row: 3, col: 'f'}
+      let location2 = {row: 3, col: 'd'}
 
-      expect(functions.isInSameRow(obj1,obj2)).toBe(true);
+      expect(functions.isInSameRow(location1,location2)).toBe(true);
     });
 
     test("isInSameRow - right", () => {
-      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
-      let obj2 = { location: {row: 3, col: 'f'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+      let location1 = {row: 3, col: 'd'}
+      let location2 = {row: 3, col: 'f'}
 
-      expect(functions.isInSameRow(obj1,obj2)).toBe(true);
+      expect(functions.isInSameRow(location1,location2)).toBe(true);
     });
 
     test("isInSameRow - false", () => {
-      let obj1 = { location: {row: 7, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
-      let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+      let location1 = {row: 7, col: 'e'}
+      let location2 = {row: 5, col: 'c'}
 
-      expect(functions.isInSameRow(obj1,obj2)).toBe(false);
+      expect(functions.isInSameRow(location1,location2)).toBe(false);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    test("isInSamecol - top", () => {
-      let obj1 = { location: {row: 3, col: 'c'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
-      let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+    test("isInSameCol - top", () => {
+      let location1 = {row: 3, col: 'c'}
+      let location2 = {row: 5, col: 'c'}
 
-      expect(functions.isInSamecol(obj1,obj2)).toBe(true);
+      expect(functions.isInSameCol(location1,location2)).toBe(true);
     });
 
-    test("isInSamecol - bottom", () => {
-      let obj1 = { location: {row: 5, col: 'c'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
-      let obj2 = { location: {row: 3, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+    test("isInSameCol - bottom", () => {
+      let location1 = {row: 5, col: 'c'}
+      let location2 = {row: 3, col: 'c'}
 
-      expect(functions.isInSamecol(obj1,obj2)).toBe(true);
+      expect(functions.isInSameCol(location1,location2)).toBe(true);
     });
 
-    test("isInSamecol - false", () => {
-      let obj1 = { location: {row: 3, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
-      let obj2 = { location: {row: 5, col: 'c'}, pieceType: "knight", isplayerPiece: true, isInGame: true }
+    test("isInSameCol - false", () => {
+      let location1 = {row: 3, col: 'e'}
+      let location2 = {row: 5, col: 'c'}
 
-      expect(functions.isInSamecol(obj1,obj2)).toBe(false);
+      expect(functions.isInSameCol(location1,location2)).toBe(false);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("isInSameDiag - left top", () => {
-      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
-      let obj2 = { location: {row: 5, col: 'b'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      let location1 = {row: 3, col: 'd'}
+      let location2 = {row: 5, col: 'b'}
 
-      expect(functions.isInSameDiag(obj1,obj2)).toBe(true);
+      expect(functions.isInSameDiag(location1,location2)).toBe(true);
     });
 
     test("isInSameDiag - left bottom", () => {
-      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
-      let obj2 = { location: {row: 2, col: 'c'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      let location1 = {row: 3, col: 'd'}
+      let location2 = {row: 2, col: 'c'}
 
-      expect(functions.isInSameDiag(obj1,obj2)).toBe(true);
+      expect(functions.isInSameDiag(location1,location2)).toBe(true);
     });
 
     test("isInSameDiag - right top", () => {
-      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
-      let obj2 = { location: {row: 7, col: 'h'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      let location1 = {row: 3, col: 'd'}
+      let location2 = {row: 7, col: 'h'}
 
-      expect(functions.isInSameDiag(obj1,obj2)).toBe(true);
+      expect(functions.isInSameDiag(location1,location2)).toBe(true);
     });
 
     test("isInSameDiag - right bottom", () => {
-      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
-      let obj2 = { location: {row: 1, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      let location1 = {row: 3, col: 'd'}
+      let location2 = {row: 1, col: 'f'}
 
-      expect(functions.isInSameDiag(obj1,obj2)).toBe(true);
+      expect(functions.isInSameDiag(location1,location2)).toBe(true);
     });
 
     test("isInSameDiag - false", () => {
-      let obj1 = { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true }
-      let obj2 = { location: {row: 3, col: 'e'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      let location1 = {row: 3, col: 'd'}
+      let location2 = {row: 3, col: 'e'}
 
-      expect(functions.isInSameDiag(obj1,obj2)).toBe(false);
+      expect(functions.isInSameDiag(location1,location2)).toBe(false);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("noPieceBetweenInRow - true", () => {
@@ -141,7 +141,7 @@ describe("Testing", () => {
         { location: {row: 2, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(functions.noPieceBetweenInRow(setup,0,2)).toBe(true);
+      expect(functions.noPieceBetweenInRow(setup,setup[0].location,setup[2].location)).toBe(true);
     });
 
     test("noPieceBetweenInRow - false", () => {
@@ -151,7 +151,7 @@ describe("Testing", () => {
         { location: {row: 2, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(functions.noPieceBetweenInRow(setup,0,2)).toBe(false);
+      expect(functions.noPieceBetweenInRow(setup,setup[0].location,setup[2].location)).toBe(false);
     });
 
     test("noPieceBetweenInRow - exception", () => {
@@ -161,67 +161,67 @@ describe("Testing", () => {
         { location: {row: 3, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(() => functions.noPieceBetweenInRow(setup,0,2)).toThrow('The two chess pieces are not in the same row!');
+      expect(() => functions.noPieceBetweenInRow(setup,setup[0].location,setup[2].location)).toThrow('The two locations are not in the same row!');
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    test("noPieceBetweenIncol - true", () => {
+    test("noPieceBetweenInCol - true", () => {
       let setup = [
         { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 5, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 4, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(functions.noPieceBetweenIncol(setup,0,2)).toBe(true);
+      expect(functions.noPieceBetweenInCol(setup,setup[0].location,setup[2].location)).toBe(true);
     });
 
-    test("noPieceBetweenIncol - false", () => {
+    test("noPieceBetweenInCol - false", () => {
       let setup = [
         { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 4, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(functions.noPieceBetweenIncol(setup,0,2)).toBe(false);
+      expect(functions.noPieceBetweenInCol(setup,setup[0].location,setup[2].location)).toBe(false);
     });
 
-    test("noPieceBetweenIncol - excepion", () => {
+    test("noPieceBetweenInCol - excepion", () => {
       let setup = [
         { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 4, col: 'e'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(() => functions.noPieceBetweenIncol(setup,0,2)).toThrow('The two chess pieces are not in the same column!');
+      expect(() => functions.noPieceBetweenInCol(setup,setup[0].location,setup[2].location)).toThrow('The two locations are not in the same column!');
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    test("noPieceBetweenindexiag - true", () => {
+    test("noPieceBetweenInDiag - true", () => {
       let setup = [
         { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 2, col: 'c'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 5, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(functions.noPieceBetweenindexiag(setup,0,2)).toBe(true);
+      expect(functions.noPieceBetweenInDiag(setup,setup[0].location,setup[2].location)).toBe(true);
     });
 
-    test("noPieceBetweenindexiag - false", () => {
+    test("noPieceBetweenInDiag - false", () => {
       let setup = [
         { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 4, col: 'e'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 5, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(functions.noPieceBetweenindexiag(setup,0,2)).toBe(false);
+      expect(functions.noPieceBetweenInDiag(setup,setup[0].location,setup[2].location)).toBe(false);
     });
 
-    test("noPieceBetweenindexiag - excepion", () => {
+    test("noPieceBetweenInDiag - excepion", () => {
       let setup = [
         { location: {row: 3, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 4, col: 'e'}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 2, col: 'g'}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
       ];
 
-      expect(() => functions.noPieceBetweenindexiag(setup,0,2)).toThrow('The two chess pieces are not in the same diagonal!');
+      expect(() => functions.noPieceBetweenInDiag(setup,setup[0].location,setup[2].location)).toThrow('The two locations are not in the same diagonal!');
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("wasPieceMoved - initial setup", () => {
@@ -416,4 +416,70 @@ describe("Testing", () => {
       expect(functions.isValidPawnPromotion(setup,1,{row: 8,col: 'b'},matchHistory)).toBe(false);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isValidAtackMoveRook - true - right", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "rook", isplayerPiece: true, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveRook(setup,0,{"row": 4,"col": 'h'})).toBe(true);
+    });
+
+    test("isValidAtackMoveRook - true - left", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "rook", isplayerPiece: true, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveRook(setup,0,{"row": 4,"col": 'a'})).toBe(true);
+    });
+
+    test("isValidAtackMoveRook - true - top", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "rook", isplayerPiece: true, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveRook(setup,0,{"row": 8,"col": 'd'})).toBe(true);
+    });
+
+    test("isValidAtackMoveRook - true - bottom", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "rook", isplayerPiece: true, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveRook(setup,0,{"row": 1,"col": 'd'})).toBe(true);
+    });
+
+    test("isValidAtackMoveRook - true - piece not in way", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "rook", isplayerPiece: true, isInGame: true},
+        { location: {row: 6, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveRook(setup,0,{"row": 1,"col": 'd'})).toBe(true);
+    });
+
+    test("isValidAtackMoveRook - false - diagonal", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "rook", isplayerPiece: true, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveRook(setup,0,{"row": 6,"col": 'f'})).toBe(false);
+    });
+
+    test("isValidAtackMoveRook - false - piece in way in row", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "rook", isplayerPiece: true, isInGame: true},
+        { location: {row: 4, col: 'f'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveRook(setup,0,{"row": 4,"col": 'h'})).toBe(false);
+    });
+
+    test("isValidAtackMoveRook - false - piece in way in col", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "rook", isplayerPiece: true, isInGame: true},
+        { location: {row: 6, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveRook(setup,0,{"row": 8,"col": 'd'})).toBe(false);
+    });
 });
