@@ -536,4 +536,42 @@ describe("Testing", () => {
 
       expect(functions.isValidAttackMoveKnight(setup,0,{"row": 3,"col": 'e'})).toBe(false);
     });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isValidAtackMoveBishop - true - enemy is there", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "bishop", isplayerPiece: true, isInGame: true},
+        { location: {row: 7, col: 'a'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveBishop(setup,0,{"row": 7,"col": 'a'})).toBe(true);
+    });
+
+    test("isValidAtackMoveBishop - true - enemy is not there", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "bishop", isplayerPiece: true, isInGame: true},
+        { location: {row: 7, col: 'a'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveBishop(setup,0,{"row": 1,"col": 'g'})).toBe(true);
+    });
+
+    test("isValidAtackMoveBishop - false - can't jump over pieces", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "bishop", isplayerPiece: true, isInGame: true},
+        { location: {row: 6, col: 'b'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+        { location: {row: 7, col: 'a'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveBishop(setup,0,{"row": 7,"col": 'd'})).toBe(false);
+    });
+
+    test("isValidAtackMoveBishop - false - not a diagonal path", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "bishop", isplayerPiece: true, isInGame: true},
+        { location: {row: 6, col: 'b'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+        { location: {row: 7, col: 'a'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveBishop(setup,0,{"row": 6,"col": 'd'})).toBe(false);
+    });
 });
