@@ -57,6 +57,36 @@ describe("Testing", () => {
       expect(functions.getPieceByLocation(setup,{row:7,col:'h'})).toBe(undefined);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("getIndexByLocation - defined outcome", () => {
+      let setup = [
+        { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "g"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "h"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 7, col: "a"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "b"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "c"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "d"}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.getIndexByLocation(setup,{row:7,col:'b'})).toBe(5);
+    });
+
+    test("getIndexByLocation - defined outcome", () => {
+      let setup = [
+        { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "g"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "h"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 7, col: "a"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "b"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "c"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "d"}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.getIndexByLocation(setup,{row:1,col:'a'})).toBe(-1);
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("isInSameRow - left", () => {
       let location1 = {row: 3, col: 'f'}
       let location2 = {row: 3, col: 'd'}
@@ -255,23 +285,28 @@ describe("Testing", () => {
       expect(functions.wasPieceMoved(setup,8,matchHistory)).toBe(true);
     });
 
-    test("wasPieceMoved - rook", () => {
+    test("wasPieceMoved - rook moves back to starting position", () => {
       let setup = [
-        { location: {row: 2, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+      ];
+
+      let matchHistory = ["Ra5","Ra1"];
+
+      expect(functions.wasPieceMoved(setup,0,matchHistory)).toBe(true);
+    });
+
+    test("wasPieceMoved - king moves back to starting position", () => {
+      let setup = [
+        { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
         { location: {row: 1, col: "b"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
         { location: {row: 1, col: "c"}, pieceType: "bishop", isplayerPiece: true, isInGame: true },
         { location: {row: 1, col: "d"}, pieceType: "queen", isplayerPiece: true, isInGame: true },
         { location: {row: 1, col: "e"}, pieceType: "king", isplayerPiece: true, isInGame: true },
-        { location: {row: 1, col: "f"}, pieceType: "bishop", isplayerPiece: true, isInGame: true },
-        { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
-        { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
-
-        { location: {row: 3, col: "a"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
       ];
 
-      let matchHistory = ["a3","g7","Ra2"];
+      let matchHistory = ["Kf2,Ke1"];
 
-      expect(functions.wasPieceMoved(setup,0,matchHistory)).toBe(true);
+      expect(functions.wasPieceMoved(setup,4,matchHistory)).toBe(true);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("isValidMovePawn1Forward - true", () => {
@@ -601,5 +636,22 @@ describe("Testing", () => {
       ];
 
       expect(functions.isValidAttackMoveQueen(setup,0,{"row": 4,"col": 'h'})).toBe(false);
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isValidAtackMoveKing - true", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "king", isplayerPiece: true, isInGame: true},
+        { location: {row: 5, col: 'e'}, pieceType: "pawn", isplayerPiece: false, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveKing(setup,0,{"row": 5,"col": 'e'})).toBe(true);
+    });
+
+    test("isValidAtackMoveKing - false - 2 cell move", () => {
+      let setup = [
+        { location: {row: 4, col: 'd'}, pieceType: "king", isplayerPiece: true, isInGame: true},
+      ];
+
+      expect(functions.isValidAttackMoveKing(setup,0,{"row": 2,"col": 'd'})).toBe(false);
     });
 });
