@@ -30,6 +30,16 @@ if (!Array.prototype.last){
     };
 };
 
+function objectEqueal(obj1, obj2) {
+    let obj1Length = Object.keys(obj1).length;
+    let obj2Length = Object.keys(obj2).length;
+
+    if (obj1Length === obj2Length) {
+        return Object.keys(obj1).every(key => obj2.hasOwnProperty(key) && obj2[key] === obj1[key]);
+    }
+    return false;
+}
+
 //returns the initial layout of the chessboard, the sequence of the array elements must remain the same
 function chessBoardStartingSetup() {
     let setup = [
@@ -98,6 +108,12 @@ function checkPieceValidity(piece) {
 //returns a piece from the setup which is on a certain location, undefined if it doesn't exist
 function getPieceByLocation(setup,expectedLocation) {
     let result = setup.find(item => item.location.row === expectedLocation.row && item.location.col === expectedLocation.col);
+    return result;
+}
+
+//returns the piece's index which is on a certain location, -1 if it is doesn't exist
+function getIndexByLocation(setup,expectedLocation) {
+    let result = setup.findIndex(item => item.location.row === expectedLocation.row && item.location.col === expectedLocation.col);
     return result;
 }
 
@@ -180,6 +196,71 @@ function noPieceBetweenInDiag(setup,location1,location2) {
 
 //we need a function to determine if a piece at index from the setup was moved yet based on algebraic notation
 //we only need this information for pawns, rooks and king
+
+//ALGEBRAIC NOTATION HELP:
+/*
+Chess phrases:
+    file    - column
+    rank    - row
+
+Naming the pieces:
+    pawn    - no name
+    rook    - R
+    knight  - N
+    bishop  - B
+    queen   - Q
+    king    - K
+
+Notation for moves: first, the name of the piece then the tile it moves to
+    c5      - pawn moves to c5
+    Be5     - bishop moves to e5
+
+Notation for captures: when a piece makes a capture, an "x" is inserted before the destination square
+    exd5    - pawn on the e-file (e column) captures the piece on d5
+    Bxe5    - bishop captures the piece on e5
+
+    En passant captures are indicated by specifying 
+    - the capturing pawn's file of departure, 
+    - the "x", 
+    - the destination square (not the square of the captured pawn)
+    e.g. exd6
+
+Disambiguating moves: When two (or more) identical pieces can move to the same square, the moving piece is uniquely 
+identified by specifying the piece's letter, followed by (in descending order of preference):
+    1. the file (column) of departure (if they differ); e.g. Rdf8 - rook in d column moves to f8
+
+    2. the rank (row) of departure (if the files are the same but the ranks differ) e.g. R1a3 - rook in first row moves to a3
+
+    3. both the file and rank of departure (if neither alone is sufficient to 
+        identify the piece – which occurs only in rare cases where a player has three or more 
+        identical pieces able to reach the same square, as a result of one or more pawns having promoted).
+    e.g. Qh4xe1 - queen on h4 captures piece on e1
+
+Pawn promotion: When a pawn promotes, the piece promoted to is indicated at the end of the move notation
+e.g. e8Q (promoting to queen)
+
+Castling: castling is indicated by the special notations 0-0 (for kingside castling) and 0-0-0 (queenside castling).
+
+Check: A move that places the opponent's king in check usually has the symbol "+" appended. e.g. Rdf8+ - rook in d column moves to f8 and gives check
+
+Checkmate: Checkmate at the completion of moves is represented by the symbol "#" e.g. Rdf8#
+
+End of game: The notation 1–0 at the completion of moves indicates that White won, 0–1 indicates that Black won, and ½–½ indicates a draw.
+
+Rook possible moves
+R must                              - R
+g3 (see disambiguating)             - R([a-h][1-8]|[a-h]|[1-8])?
+x not must                          - R([a-h][1-8]|[a-h]|[1-8])?x?
+g8 from variable                    - R([a-h][1-8]|[a-h]|[1-8])?x?${initPieceLocation.col}${initPieceLocation.row}
++ not must                          - R([a-h][1-8]|[a-h]|[1-8])?x?${initPieceLocation.col}${initPieceLocation.row}\+?
+ 
+King possible moves
+K must                              - K
+x not must                          - Kx?
+g3 from variable                    - Kx?${initPieceLocation.col}${initPieceLocation.row}
++ not must                          - Kx?${initPieceLocation.col}${initPieceLocation.row}\+?
+*/ 
+
 function wasPieceMoved(setup,index,matchHistory = []) {
 
     if(matchHistory === []) {
@@ -187,31 +268,39 @@ function wasPieceMoved(setup,index,matchHistory = []) {
     }
 
     let piece = setup[index];
-    let initPieceLocation = chessBoardStartingSetup()[index].location;
+    let initPieceLocation = chessBoardStartingSetup()[index].location; //the initial location of the pice on game start
 
+    //pawns can't move back to their starting position
     if(piece.pieceType === "pawn"){
         return initPieceLocation.row !== piece.location.row || //the piece's location is not the starting location
         initPieceLocation.col !== piece.location.col
-    }
+    } 
 
-    else if(piece.pieceType === "rook") {
-        const regex = new RegExp(`R${initPieceLocation.col}${initPieceLocation.row}`);
+    //rooks and the king can move back to their starting position
+    else if(piece.pieceType === "rook" || piece.pieceType === "king") {
 
+        let regex;
+        if(piece.pieceType === "rook") {
+            regex = new RegExp(`R([a-h][1-8]|[a-h]|[1-8])?x?${initPieceLocation.col}${initPieceLocation.row}\+?`)
+        } 
+        else if(piece.pieceType === "king") {
+            regex = new RegExp(`Kx?${initPieceLocation.col}${initPieceLocation.row}\+?`)
+        }
+        
         for(var i=0;i<matchHistory.length;++i) {
             if(initPieceLocation.row !== piece.location.row || //the piece's location is not the starting location
             initPieceLocation.col !== piece.location.col ||
-            regex.test(matchHistory[i])) { //there was an occasion when a rook moved back to the starting location
+            regex.test(matchHistory[i])) { //there was an occasion when a rook/king moved back to the starting location
                 return true;
             }
         }
         return false;
     }
 
-    /*
-    else if(piece.pieceType === "king") {
-        return true;
+    else {
+        throw "It is sufficient to know only if the designated pawn/rook/king was moved or not!"
     }
-    */
+
 }
 
 //calculates if the pawn at 'index' is eligible to move 1 tile forward - to 'newLocation' - from the chessboard 'setup' 
@@ -362,21 +451,66 @@ function isValidAttackMoveQueen(setup,index,newLocation) {
     let rowDiff = Math.abs(currentPiece.location.row - newLocation.row)
     let colDiff = Math.abs(currentPiece.location.col.charCodeAt(0) - newLocation.col.charCodeAt(0))
 
- 
-        
     return (
         //horizontal and vertical moves
         (newLocation.col === currentPiece.location.col && newLocation.row !== currentPiece.location.row && noPieceBetweenInCol(setup,currentPiece.location,newLocation) ) || 
         (newLocation.row === currentPiece.location.row && newLocation.col !== currentPiece.location.col && noPieceBetweenInRow(setup,currentPiece.location,newLocation) )
-    ) 
-    ||
+        ) 
+        ||
         //diagonal moves
-    (
+        (
         rowDiff === colDiff &&
         noPieceBetweenInDiag(setup,currentPiece.location,newLocation) && 
         (getPieceByLocation(setup,newLocation) === undefined ||  getPieceByLocation(setup,newLocation).isplayerPiece === false) 
     )
     
+}
+
+function isValidAttackMoveKing(setup,index,newLocation) {
+
+    let currentPiece = setup[index];
+    if(currentPiece.pieceType !== "king") {
+        throw "The selected piece must be of type king!"
+    }
+
+    let rowDiff = Math.abs(currentPiece.location.row - newLocation.row)
+    let colDiff = Math.abs(currentPiece.location.col.charCodeAt(0) - newLocation.col.charCodeAt(0))
+
+    return (getPieceByLocation(setup,newLocation) === undefined ||  getPieceByLocation(setup,newLocation).isplayerPiece === false) &&
+    (0 < rowDiff + colDiff && rowDiff + colDiff <= 2 && rowDiff <= 1 && colDiff <= 1)
+}
+
+//the index is the king's index
+function isValidCastling(setup,index,newLocation,matchHistory = []) {
+
+    let currentPiece = setup[index];
+    if(currentPiece.pieceType !== "king") {
+        throw "The selected piece must be of type king!"
+    }
+
+    let rookLocation = {} //we need to know which rook we want to perform the castling with
+    let kingLocation = {row:1,col:"e"}
+
+    if(objectEqual(newLocation,{"row":1,"col":'g'})) { //short castling
+        rookLocation = {"row":1,"col":'h'}
+    }
+    else if(objectEqual(newLocation,{"row":1,"col":'c'})) { //long castling
+        rookLocation = {"row":1,"col":'a'}
+    }
+    else {
+        return false
+    }
+
+    //return with false if there are no king and rook at the corresponding places
+    if(getPieceByLocation(setup,kingLocation).pieceType !== "king" || getPieceByLocation(setup,rookLocation).pieceType !== "rook") {
+        return false
+    }
+
+    let kingIndex = index
+    let rookIndex = getIndexByLocation(setup,rookLocation)
+
+    return !wasPieceMoved(setup,kingIndex,matchHistory) && !wasPieceMoved(setup,rookIndex,matchHistory) && //the king and the rook were not moved yet
+    noPieceBetweenInRow(setup,kingLocation,rookLocation) //there is no piece between them
 }
 
 
@@ -386,6 +520,7 @@ module.exports = {
     chessBoardStartingSetup,
     checkPieceValidity,
     getPieceByLocation,
+    getIndexByLocation,
     isInSameRow,
     isInSameCol,
     isInSameDiag,
@@ -402,5 +537,7 @@ module.exports = {
     isValidAttackMoveRook,
     isValidAttackMoveKnight,
     isValidAttackMoveBishop,
-    isValidAttackMoveQueen
+    isValidAttackMoveQueen,
+    isValidAttackMoveKing,
+    isValidCastling
 }
