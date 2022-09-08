@@ -1,17 +1,18 @@
-//set up expressJS app
-const PORT = 8000;
+let functions = require("./functions"); 
 const express = require('express');
 const app = express();
+app.use(express.json())
 
-let functions = require("./functions"); 
 
 //define how the server will respond to certain calls
 app.get('/', (req,res) => {
-    res.json("Welcome to my chess API :)");
+    res.send("Welcome to my chess API :)");
 });
 
 app.get('/isvalidselection/:setup/:location', function(req, res) {
-    res.json(functions.isValidSelection(setup,location))
+    let setup = JSON.parse(req.params.setup)
+    let location = JSON.parse(req.params.location)
+    res.send( functions.isValidSelection(setup,location) )
 });
 
 app.get('/isvalidmove/:setup/:index/:newlocation/:matchhistory', function(req, res) {
@@ -24,11 +25,15 @@ app.get('/listvalidmoves/:setup/:index/:matchhistory', function(req, res) {
     let index = req.params.index
     let matchHistory = req.params.matchhistory
 
-    res.json("alma")
+    res.send("alma")
 });
 
 app.get('/enemynextmove/:setup/:matchhistory/:difficulty', function(req, res) {
 
 });
 
-app.listen(PORT, () => console.log(`server running on PORT ${PORT}`));
+app.get('/test/:firstname', function(req, res) {
+    res.send("Hi " + req.params.firstname)
+});
+
+module.exports = app;
