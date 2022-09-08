@@ -3,24 +3,32 @@ const PORT = 8000;
 const express = require('express');
 const app = express();
 
-//include functions module, the file that contains 
-//the core functionality of the project
 let functions = require("./functions"); 
-//console.log(functions.addTwo(1,2));
-//console.log(functions.lolSomething());
 
 //define how the server will respond to certain calls
 app.get('/', (req,res) => {
-    res.json("Welcome to my chess :)");
+    res.json("Welcome to my chess API :)");
 });
 
-app.get('/test', (req,res) => {
-    res.json("hehe it's working");
+app.get('/isvalidselection/:setup/:location', function(req, res) {
+    res.json(functions.isValidSelection(setup,location))
 });
 
-app.get('/test/:testId', async (req,res) => {
-    res.json("testing a parameter");
-    console.log(req.params.testId);
+app.get('/isvalidmove/:setup/:index/:newlocation/:matchhistory', function(req, res) {
+
+});
+
+app.get('/listvalidmoves/:setup/:index/:matchhistory', function(req, res) {
+    //testing the parameters
+    let setup = req.params.setup
+    let index = req.params.index
+    let matchHistory = req.params.matchhistory
+
+    res.json("alma")
+});
+
+app.get('/enemynextmove/:setup/:matchhistory/:difficulty', function(req, res) {
+
 });
 
 app.listen(PORT, () => console.log(`server running on PORT ${PORT}`));

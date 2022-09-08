@@ -654,4 +654,125 @@ describe("Testing", () => {
 
       expect(functions.isValidAttackMoveKing(setup,0,{"row": 2,"col": 'd'})).toBe(false);
     });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isInCheck - true - black king", () => {
+      let setup = [
+        { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "b"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "c"}, pieceType: "bishop", isplayerPiece: true, isInGame: true },
+        { location: {row: 4, col: "a"}, pieceType: "queen", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "e"}, pieceType: "king", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "f"}, pieceType: "bishop", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+
+        { location: {row: 2, col: "a"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "b"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 4, col: "c"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "d"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "g"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "h"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+
+        { location: {row: 7, col: "a"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "b"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "c"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 4, col: "d"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "e"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "f"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "g"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "h"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+
+        { location: {row: 8, col: "a"}, pieceType: "rook", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "b"}, pieceType: "knight", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "c"}, pieceType: "bishop", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "f"}, pieceType: "bishop", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "g"}, pieceType: "knight", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "h"}, pieceType: "rook", isplayerPiece: false, isInGame: true }
+      ];
+
+      let matchHistory = ["c4","d5","Qa4+"]
+
+      expect(functions.isInCheck(setup,false,matchHistory)).toBe(true);
+    });
+
+    test("isInCheck - false - black king", () => {
+      let setup = [
+        { location: {row: 1, col: "a"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "b"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "c"}, pieceType: "bishop", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "d"}, pieceType: "queen", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "e"}, pieceType: "king", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "f"}, pieceType: "bishop", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+
+        { location: {row: 2, col: "a"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "b"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 4, col: "c"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "d"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "g"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "h"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+
+        { location: {row: 7, col: "a"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "b"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "c"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "d"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "e"}, pieceType: "pawn", isplayerPiece: false, isInGame: false },
+        { location: {row: 7, col: "f"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "g"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "h"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+
+        { location: {row: 8, col: "a"}, pieceType: "rook", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "b"}, pieceType: "knight", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "c"}, pieceType: "bishop", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "f"}, pieceType: "bishop", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "g"}, pieceType: "knight", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "h"}, pieceType: "rook", isplayerPiece: false, isInGame: true }
+      ];
+
+      let matchHistory = ["c4"]
+
+      expect(functions.isInCheck(setup,true,matchHistory)).toBe(false);
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("isValidSelection - true", () => {
+      let setup = [
+        { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+        { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true },
+      ];
+
+      expect(functions.isValidSelection(setup,{row:1,col:'h'})).toBe(true);
+    });
+
+    test("isValidSelection - false - piece at location is not in game", () => {
+      let setup = [
+        { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: false },
+        { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true },
+      ];
+
+      expect(functions.isValidSelection(setup,{row:1,col:'h'})).toBe(false);
+    });
+
+    test("isValidSelection - false - piece at location is not player piece", () => {
+      let setup = [
+        { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+        { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+        { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true },
+        { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true },
+      ];
+
+      expect(functions.isValidSelection(setup,{row:8,col:'d'})).toBe(false);
+    });
 });

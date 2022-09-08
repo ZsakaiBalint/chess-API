@@ -107,7 +107,7 @@ function checkPieceValidity(piece) {
 
 //returns a piece from the setup which is on a certain location, undefined if it doesn't exist
 function getPieceByLocation(setup,expectedLocation) {
-    let result = setup.find(item => item.location.row === expectedLocation.row && item.location.col === expectedLocation.col);
+    let result = setup.find(item => item.location.row === expectedLocation.row && item.location.col === expectedLocation.col && item.isInGame);
     return result;
 }
 
@@ -513,6 +513,51 @@ function isValidCastling(setup,index,newLocation,matchHistory = []) {
     noPieceBetweenInRow(setup,kingLocation,rookLocation) //there is no piece between them
 }
 
+//returns if the king is in check (works on both sides)
+function isInCheck(setup,isPlayerKing=true,matchHistory) {
+
+    //which king we are working with
+    let kingPiece
+    isPlayerKing ? kingPiece = setup[4] : kingPiece = setup[28]
+
+    //check for all pieces of the other player if it's a valid attack to the king's location
+    for(let i=0;i<32;++i) {
+        //XOR
+        if( (kingPiece.isplayerPiece && !setup[i].isplayerPiece) || (!kingPiece.isplayerPiece && setup[i].isplayerPiece) ) {
+            switch(setup[i].pieceType) {
+                case "pawn":
+                    if(isValidAttackPawn(setup,i,kingPiece.location) || isValidEnpassant(setup,i,kingPiece.location,matchHistory)){return true}
+                    break;
+                case "rook":
+                    if(isValidAttackMoveRook(setup,i,kingPiece.location)){return true}
+                    break;
+                case "knight":
+                    if(isValidAttackMoveKnight(setup,i,kingPiece.location)){return true}
+                    break;
+                case "bishop":
+                    if(isValidAttackMoveBishop(setup,i,kingPiece.location)){return true}
+                    break;
+                case "queen":
+                    if(isValidAttackMoveQueen(setup,i,kingPiece.location)){return true}
+                    break;
+                case "king":
+                    if(isValidAttackMoveKing(setup,i,kingPiece.location)){return true}
+                    break;
+            }
+        }
+    }
+    return false
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//return true if the selection/reselection is valid
+function isValidSelection(setup,location) {
+    let targetPiece = getPieceByLocation(setup,location)
+    return targetPiece !== undefined && targetPiece.isplayerPiece
+}
 
 
 //we specify here that we want to export these functions from the functions.js module
@@ -539,5 +584,7 @@ module.exports = {
     isValidAttackMoveBishop,
     isValidAttackMoveQueen,
     isValidAttackMoveKing,
-    isValidCastling
+    isValidCastling,
+    isInCheck,
+    isValidSelection
 }
