@@ -1,6 +1,11 @@
-let functions = require("../functions"); 
+//include functions
+const functions = require("../functions");
 
-describe("Testing", () => {
+//for endpoint testing include supertest
+const request = require("supertest")
+const app = require("../app");
+
+describe("UNIT TESTS", () => {
     test("checkPieceValidity - row", () => {
       let obj = { location: {row: 15, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
       
@@ -775,4 +780,30 @@ describe("Testing", () => {
 
       expect(functions.isValidSelection(setup,{row:8,col:'d'})).toBe(false);
     });
+});
+
+
+describe("ENDPOINT TESTS", () => {
+
+  test("greeting /", async () => {
+    let response = await request(app).get('/')
+
+    expect(response.text).toBe('Welcome to my chess API :)')
+  });
+
+  test("get isValidSelection", async () => {
+
+    let setup = JSON.stringify([
+      { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+      { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+      { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true },
+      { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true },
+    ]);
+    let location = JSON.stringify({row:1,col:'h'})
+
+    //let response = await request(app).get('/test/alma')
+    let response = await request(app).get("/isvalidselection/"+setup+"/"+location)
+    
+    expect(response.text).toBe('true')
+  });
 });
