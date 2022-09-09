@@ -12,28 +12,25 @@ app.get('/', (req,res) => {
 app.get('/isvalidselection/:setup/:location', function(req, res) {
     let setup = JSON.parse(req.params.setup)
     let location = JSON.parse(req.params.location)
+
     res.send( functions.isValidSelection(setup,location) )
 });
 
 app.get('/isvalidmove/:setup/:index/:newlocation/:matchhistory', function(req, res) {
+    let setup = JSON.parse(req.params.setup)
+    let index = JSON.parse(req.params.location)
+    let newLocation = JSON.parse(req.params.location)
+    let matchHistory = JSON.parse(req.params.location)
 
+    res.send( functions.isValidMove(setup,index,newLocation,matchHistory) )
 });
 
 app.get('/listvalidmoves/:setup/:index/:matchhistory', function(req, res) {
-    //testing the parameters
-    let setup = req.params.setup
-    let index = req.params.index
-    let matchHistory = req.params.matchhistory
-
-    res.send("alma")
 });
 
 app.get('/enemynextmove/:setup/:matchhistory/:difficulty', function(req, res) {
-
 });
 
-app.get('/test/:firstname', function(req, res) {
-    res.send("Hi " + req.params.firstname)
-});
+
 
 module.exports = app;

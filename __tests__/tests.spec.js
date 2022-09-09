@@ -397,14 +397,14 @@ describe("UNIT TESTS", () => {
       expect(functions.isValidAttackPawn(setup,1,{row: 3,col: 'c'})).toBe(true);
     });
 
-    test("isValidAttackPawn - false - invalid location", () => {
+    test("isValidAttackPawn - false - no enemy piece there", () => {
       let setup = [
         { location: {row: 2, col: 'c'}, pieceType: "pawn", isplayerPiece: true, isInGame: true},
         { location: {row: 2, col: 'd'}, pieceType: "pawn", isplayerPiece: true, isInGame: true},
         { location: {row: 5, col: 'd'}, pieceType: "pawn", isplayerPiece: false, isInGame: true}
       ];
 
-      expect(functions.isValidAttackPawn(setup,1,{row: 7,col: 'g'})).toBe(false);
+      expect(functions.isValidAttackPawn(setup,0,{row: 3,col: 'd'})).toBe(false);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("isValidEnpassant - true", () => {
@@ -801,9 +801,7 @@ describe("ENDPOINT TESTS", () => {
     ]);
     let location = JSON.stringify({row:1,col:'h'})
 
-    //let response = await request(app).get('/test/alma')
     let response = await request(app).get("/isvalidselection/"+setup+"/"+location)
-    
     expect(response.text).toBe('true')
   });
 });
