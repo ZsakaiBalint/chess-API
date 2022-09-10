@@ -7,6 +7,7 @@ A tesztek automatikusan lefutnak minden commitnál (github actions).
 **Fontosabb parancsok**  
 npm start : elindítja magát a webes applikációt  
 npm test  : lefuttatja a teszteket
+
 ***
 A repository felépítése a következő:
 * app.js: ebben a fileban van definiálva, hogy az api hogyan viselkedjen a HTTP GET hívásokra
