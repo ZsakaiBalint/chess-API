@@ -20,7 +20,6 @@ A repository felépítése a következő:
     * test.spec.js: ez a file tartalmazza a teszteseteket
 * .github\workflows *mappa*
     * node.js.yml: ez a file felelős azért, hogy lefussanak githubon az automatikus tesztek
-
 ***
 A felhasznált technológiák:
 * NodeJS v16.16.0
