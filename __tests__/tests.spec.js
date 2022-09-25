@@ -4,42 +4,43 @@ const functions = require("../functions");
 //for endpoint testing include supertest
 const request = require("supertest")
 const app = require("../app");
+const { json } = require("express");
 
 describe("UNIT TESTS", () => {
-    test("checkPieceValidity - row", () => {
+    test("isValidPiece - row", () => {
       let obj = { location: {row: 15, col: 'e'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
       
-      expect(() => functions.checkPieceValidity(obj)).toThrow('The row number of the chess piece must be between 1-8!');
+      expect(() => functions.isValidPiece(obj)).toThrow('The row number of the chess piece must be between 1-8!');
     });
 
-    test("checkPieceValidity - col", () => {
+    test("isValidPiece - col", () => {
       let obj = { location: {row: 4, col: 'k'}, pieceType: "bishop", isplayerPiece: false, isInGame: true }
       
-      expect(() => functions.checkPieceValidity(obj)).toThrow('The column letter must be between a-h!');
+      expect(() => functions.isValidPiece(obj)).toThrow('The column letter must be between a-h!');
     });
 
-    test("checkPieceValidity - pieceType", () => {
+    test("isValidPiece - pieceType", () => {
       let obj = { location: {row: 3, col: 'e'}, pieceType: "nOtAcHeSsPiEcE", isplayerPiece: false, isInGame: true }
       
-      expect(() => functions.checkPieceValidity(obj)).toThrow('The chess piece type must be one of the following: pawn/rook/knight/bishop/queen/king!');
+      expect(() => functions.isValidPiece(obj)).toThrow('The chess piece type must be one of the following: pawn/rook/knight/bishop/queen/king!');
     });
 
-    test("checkPieceValidity - isPlayerPiece", () => {
+    test("isValidPiece - isPlayerPiece", () => {
       let obj = { location: {row: 4, col: 'e'}, pieceType: "bishop", isplayerPiece: 1, isInGame: true }
       
-      expect(() => functions.checkPieceValidity(obj)).toThrow('The playerPiece property must be a boolean value!');
+      expect(() => functions.isValidPiece(obj)).toThrow('The playerPiece property must be a boolean value!');
     });
 
-    test("checkPieceValidity - isInGame", () => {
+    test("isValidPiece - isInGame", () => {
       let obj = { location: {row: 4, col: 'e'}, pieceType: "bishop", isplayerPiece: true, isInGame: 1 }
       
-      expect(() => functions.checkPieceValidity(obj)).toThrow('The isInGame property must be a boolean value!');
+      expect(() => functions.isValidPiece(obj)).toThrow('The isInGame property must be a boolean value!');
     });
 
-    test("checkPieceValidity - no exceptions", () => {
+    test("isValidPiece - no exceptions", () => {
       let obj = { location: {row: 4, col: 'e'}, pieceType: "bishop", isplayerPiece: true, isInGame: true }
       
-      expect(() => functions.checkPieceValidity(obj)).not.toThrowError();
+      expect(() => functions.isValidPiece(obj)).not.toThrowError();
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     test("getPieceByLocation - defined outcome", () => {
@@ -62,7 +63,22 @@ describe("UNIT TESTS", () => {
       expect(functions.getPieceByLocation(setup,{row:7,col:'h'})).toBe(undefined);
     });
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    test("getIndexByLocation - defined outcome", () => {
+    test("getIndexByLocation - defined outcome - player piece", () => {
+      let setup = [
+        { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "g"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 2, col: "h"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
+        { location: {row: 7, col: "a"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "b"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "c"}, pieceType: "pawn", isplayerPiece: false, isInGame: true },
+        { location: {row: 7, col: "d"}, pieceType: "pawn", isplayerPiece: false, isInGame: true }
+      ];
+
+      expect(functions.getIndexByLocation(setup,{row:2,col:'g'})).toBe(2);
+    });
+
+    test("getIndexByLocation - defined outcome - enemy piece", () => {
       let setup = [
         { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
@@ -77,7 +93,7 @@ describe("UNIT TESTS", () => {
       expect(functions.getIndexByLocation(setup,{row:7,col:'b'})).toBe(5);
     });
 
-    test("getIndexByLocation - defined outcome", () => {
+    test("getIndexByLocation - undefined - no piece found", () => {
       let setup = [
         { location: {row: 2, col: "e"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
         { location: {row: 2, col: "f"}, pieceType: "pawn", isplayerPiece: true, isInGame: true },
@@ -804,4 +820,21 @@ describe("ENDPOINT TESTS", () => {
     let response = await request(app).get("/isvalidselection/"+setup+"/"+location)
     expect(response.text).toBe('true')
   });
+
+  test("get isValidMove", async () => {
+
+    let setup = JSON.stringify([
+      { location: {row: 1, col: "g"}, pieceType: "knight", isplayerPiece: true, isInGame: true },
+      { location: {row: 1, col: "h"}, pieceType: "rook", isplayerPiece: true, isInGame: true },
+      { location: {row: 8, col: "d"}, pieceType: "queen", isplayerPiece: false, isInGame: true },
+      { location: {row: 8, col: "e"}, pieceType: "king", isplayerPiece: false, isInGame: true },
+    ]);
+    let index = JSON.stringify(1)
+    let newLocation = JSON.stringify({row:5,col:'h'})
+    let matchHistory = JSON.stringify([])
+
+    let response = await request(app).get("/isvalidmove/"+setup+"/"+index+"/"+newLocation+"/"+matchHistory)
+    expect(response.text).toBe('true')
+
+  })
 });

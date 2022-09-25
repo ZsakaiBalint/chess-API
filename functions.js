@@ -11,7 +11,7 @@
         The user has to put these objects into an array. The order of these pieces doesn't matter.
 
     #2 -> the match history
-        all previous moves should be in algebraic notatin: ["b4,a6,g3..."]
+        all previous moves should be in algebraic notatin: ["b4,"a6","g3",...]
             the playsers' moves alternate in this array, starting with white, then black, then white again etc...
             the API caller doesn't need to change this array, they only have to send it to the API when the player wants to
             make a move and then they receive the modified match history with this last move added.
@@ -22,7 +22,7 @@
     #2 ->the second part can be called by the player to send the API what the user's move was and then request a move from the opponent
 */
 
-//#1 FIRST PART
+//UNIT FUNCTIONS
 
 if (!Array.prototype.last){
     Array.prototype.last = function(){
@@ -82,32 +82,171 @@ function chessBoardStartingSetup() {
     return setup;
 };
 
-//we need a function to determine if the individual pieces sent by the user are valid
-function checkPieceValidity(piece) {
-    if(piece.location.row < 1 || piece.location.row > 8 || piece.location.row % 1 != 0) {
-        throw "The row number of the chess piece must be between 1-8!";
+function isValidLocation(location) {
+    if(location.row < 1 || location.row > 8 || location.row % 1 != 0) {
+        //The row of the location must be between 1-8, must be a whole number!
+        return false
     }
 
-    if(!['a','b','c','d','e','f','g','h'].includes(piece.location.col)){
-        throw "The column letter must be between a-h!";
+    if(!['a','b','c','d','e','f','g','h'].includes(location.col)){
+        //The column of the location must be between a-h!
+        return false
+    }
+
+    return true
+}
+
+//we need a function to determine if the individual pieces sent by the user are valid
+function isValidPiece(piece) {
+    if(!isValidLocation(piece.location)) {
+        //The piece must have a valid location!
+        return false
     }
 
     if(!["pawn","rook","knight","bishop","queen","king"].includes(piece.pieceType)) {
-        throw "The chess piece type must be one of the following: pawn/rook/knight/bishop/queen/king!";
+        //The chess piece type must be one of the following: pawn/rook/knight/bishop/queen/king!
+        return false
     }
 
     if(typeof piece.isplayerPiece !== "boolean") {
-        throw "The playerPiece property must be a boolean value!";
+        //The playerPiece property must be a boolean value!
+        return false
     }
 
     if(typeof piece.isInGame !== "boolean") {
-        throw "The isInGame property must be a boolean value!";
+        //The isInGame property must be a boolean value!
+        return false
     }
+
+    return true
+}
+
+//we need a function to determine if all the pieces are valid in the setup
+function isValidSetup(setup) {
+    if(setup.length !== 32) {
+        //The setup must contain exactly 32 pieces (alive or dead)
+        return false
+    }
+
+    if(setup.filter( (element) => element.pieceType === "king" && element.isplayerPiece && element.isInGame).length !== 1) {
+        //The setup must have exactly 1 player king!
+        return false
+    }
+
+    if(setup.filter( (element) => element.pieceType === "king" && !element.isplayerPiece && element.isInGame).length !== 1) {
+        //The setup must have exactly 1 enemy king!
+        return false
+    }
+
+    return setup.every( (element) => isValidPiece(element) )
+}
+
+//checks if one note from an algebraic notation is valid
+function isValidNotation(notation) {
+
+    //white won, black won, draw, kingside castling, queenside castling
+    if(notation === "1-0" || notation === "0-1" || notation === "½–½" ||
+    notation === "0-0" || notation === "0-0-0") {
+        return true
+    }
+    //the notation is of type pawn
+    else if(!notation.startsWith('R') && !notation.startsWith('N') && !notation.startsWith('B') && 
+       !notation.startsWith('Q') && !notation.startsWith('K')){
+
+        let pawnBasicMoves = new RegExp(`([a-h]x|x)?[a-h][1-8](\+|#)?`)
+        let pawnPromotions = new RegExp(`([a-h]x|x)?[a-h]8(R|N|B|Q)(\+|#)?`)
+
+        //if it has two letters from a-h they must be next to each other (because pawns can only attack diagonally)
+        //semantical test
+        
+        let columnLetters = notation.split('').filter( (letter) =>['a','b','c','d','e','f','g','h'].includes(letter) )
+        
+        if(columnLetters.length === 1) {
+            return pawnBasicMoves.test(notation) || pawnPromotions.test(notation)
+        }
+        else if(columnLetters.length === 2) {
+            let columnDiff = Math.abs(columnLetters[0].charCodeAt(0) - columnLetters[1].charCodeAt(0))
+            return columnDiff === 1 && (pawnBasicMoves.test(notation) || pawnPromotions.test(notation))
+        }  
+
+    }
+    //the notation is of type rook
+    else if(notation.startsWith('R')) {
+        rookMoves = new RegExp(`R([1-8]|[a-h]|)?x?[a-h][1-8](\+|#)?`)
+        return rookMoves.test(notation)
+    }
+    //the notation is of type knight
+    else if(notation.startsWith('N')) {
+        knightMoves = new RegExp(`N([a-h][1-8]|[1-8]|[a-h]|)?x?[a-h][1-8](\+|#)?`)
+        
+        let columnLetters = notation.split('').filter( (letter) =>['a','b','c','d','e','f','g','h'].includes(letter) )
+        let rowLetters = notation.split('').filter( (letter) =>['1','2','3','4','5','6','7','8'].includes(letter) )
+        
+        //if we need both row and column to identify the piece
+        if(columnLetters.length === 2 && rowLetters.length === 2) {
+            let columnDiff = Math.abs(columnLetters[0].charCodeAt(0) - columnLetters[1].charCodeAt(0))
+            let rowDiff = Math.abs(rownLetters[0] - rownLetters[1])
+            return (columnDiff === 1 && rowDiff === 2 && knightMoves.test(notation)) ||
+            (columnDiff === 2 && rowDiff === 1 && knightMoves.test(notation))
+        }
+        else {
+            return knightMoves.test(notation)
+        }
+    }
+    //the notation is of type bishop
+    else if(notation.startsWith('B')) {
+        bishopMoves = new RegExp(`B([a-h][1-8]|[1-8]|[a-h]|)?x?[a-h][1-8](\+|#)?`)
+
+        let columnLetters = notation.split('').filter( (letter) =>['a','b','c','d','e','f','g','h'].includes(letter) )
+        let rowLetters = notation.split('').filter( (letter) =>['1','2','3','4','5','6','7','8'].includes(letter) )
+        
+        //if we need both row and column to identify the piece
+        if(columnLetters.length === 2 && rowLetters.length === 2) {
+            let columnDiff = Math.abs(columnLetters[0].charCodeAt(0) - columnLetters[1].charCodeAt(0))
+            let rowDiff = Math.abs(rownLetters[0] - rownLetters[1])
+            return columnDiff === rowDiff && bishopMoves.test(notation)
+        }
+        else {
+            return bishopMoves.test(notation)
+        }
+    }
+    //the notation is of type queen
+    else if(notation.startsWith('Q')) {
+        queenMoves = new RegExp(`Q([a-h][1-8]|[1-8]|[a-h]|)?x?[a-h][1-8](\+|#)?`)
+      
+        let columnLetters = notation.split('').filter( (letter) =>['a','b','c','d','e','f','g','h'].includes(letter) )
+        let rowLetters = notation.split('').filter( (letter) =>['1','2','3','4','5','6','7','8'].includes(letter) )
+        
+        //if we need both row and column to identify the piece
+        if(columnLetters.length === 2 && rowLetters.length === 2) {
+            let columnDiff = Math.abs(columnLetters[0].charCodeAt(0) - columnLetters[1].charCodeAt(0))
+            let rowDiff = Math.abs(rownLetters[0] - rownLetters[1])
+            return columnDiff === rowDiff && queenMoves.test(notation)
+        }
+        else {
+            return queenMoves.test(notation)
+        }
+    }
+    //the notation is of type king
+    else if(notation.startsWith('K')) {
+        kingMoves = new RegExp(`Kx?[a-h][1-8](\+|#)?`)
+        return kingMoves.test(notation)
+    }
+    else {
+        return false
+    }    
+}
+
+function isValidMatchHistory(matchHistory) {
+
 }
 
 //returns a piece from the setup which is on a certain location, undefined if it doesn't exist
 function getPieceByLocation(setup,expectedLocation) {
     let result = setup.find(item => item.location.row === expectedLocation.row && item.location.col === expectedLocation.col && item.isInGame);
+    if(result === undefined) {
+        throw "There is no piece at the given location!"
+    }
     return result;
 }
 
@@ -635,15 +774,39 @@ function isInCheck(setup,isPlayerKing=true,matchHistory) {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//API FUNCTIONS
 
-//return true if the selection/reselection is valid
+//RETURNS TRUE IF THE SELECTION/RESELECTION IS VALID
 function isValidSelection(setup,location) {
-    let targetPiece = getPieceByLocation(setup,location)
-    return targetPiece !== undefined && targetPiece.isplayerPiece
+
+    if(!isValidSetup(setup)) {
+        throw "The given setup is not valid!"
+    }
+    if(!isValidLocation(location)) {
+        throw "The given location is not valid!"
+    }
+
+    let piece = getPieceByLocation(setup,location)
+    return piece.isplayerPiece && //a player can only select their pieces
+                piece.isInGame    //which are still in game
 }
 
-//return true if the piece from setup at index can move to newlocation based on matchistory
+//RETURNS TRUE IF THE PIECE FROM SETUP AT INDEX CAN MOVE TO THE NEWLOCATION BASED ON THE MATCH HISTORY
 function isValidMove(setup,index,newLocation,matchHistory){
+
+    if(!isValidSetup(setup)) {
+        throw "The given setup is not valid!"
+    }
+    if(index % 1 !== 0) {
+        throw "The index must be an integer number"
+    }
+    if(!isValidLocation(newLocation)) {
+        throw "The given location is not valid!"
+    }
+    if(!isValidMatchHistory(matchHistory)) {
+        throw "The given match history is not valid!"
+    }
+
     let currentPiece = setup[index];
 
     if(currentPiece.pieceType === "pawn") {
@@ -684,7 +847,10 @@ function isValidMove(setup,index,newLocation,matchHistory){
 //we specify here that we want to export these functions from the functions.js module
 module.exports = {
     chessBoardStartingSetup,
-    checkPieceValidity,
+    isValidLocation,
+    isValidPiece,
+    isValidSetup,
+    isValidNotation,
     getPieceByLocation,
     getIndexByLocation,
     isInSameRow,
@@ -707,5 +873,6 @@ module.exports = {
     isValidAttackMoveKing,
     isValidCastling,
     isInCheck,
-    isValidSelection
+    isValidSelection,
+    isValidMove
 }
