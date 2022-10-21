@@ -7,7 +7,7 @@ app.use(express.json())
 
 //GREETING THE USER (DEFAULT RESPONSE)
 app.get('/', (req,res) => {
-    res.send("Welcome to my chess API :)");
+    res.send("Welcome to my chess API :) coded by: Zsákai Bálint");
 });
 
 //CHECK IF THE USER SELECTED A VALID PLAYER PIECE
@@ -34,14 +34,16 @@ app.get('/listvalidmoves/:setup/:index/:matchhistory', function(req, res) {
     let index = JSON.parse(req.params.index)
     let matchHistory = JSON.parse(req.params.matchhistory)
 
-    res.send( functions.listValidMoves(setup,index,matchHistory) )
+    res.send("not implemented yet");
+    //res.send( functions.listValidMoves(setup,index,matchHistory) )
 });
 
 //CHECK IF THE GAME IS OVER
 app.get('/isgameover/:setup', function(req,res) {
     let setup = JSON.parse(req.params.setup)
     
-    res.send( functions.isGameover(setup,matchHistory,difficulty) )
+    res.send("not implemented yet");
+    //res.send( functions.isGameover(setup,matchHistory,difficulty) )
 });
 
 //GET THE ENEMY RESPONSE MOVE AFTER THE PLAYER MOVED
@@ -50,7 +52,8 @@ app.get('/getenemynextmove/:setup/:matchhistory/:difficulty', function(req, res)
     let matchHistory = JSON.parse(req.params.matchhistory)
     let difficulty = JSON.parse(req.params.difficulty)
 
-    res.send( functions.getEnemyNextMove(setup,matchHistory,difficulty) )
+    res.send("not implemented yet");
+    //res.send( functions.getEnemyNextMove(setup,matchHistory,difficulty) )
 });
 
 
